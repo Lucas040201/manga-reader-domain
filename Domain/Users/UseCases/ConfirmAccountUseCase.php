@@ -29,6 +29,11 @@ class ConfirmAccountUseCase implements ConfirmAccountInputPort
         if(empty($user)) {
             throw new UserNotFoundException();
         }
+
+        if($user->getStatus() === UserStatusEnum::active->value) {
+            throw new AccountAlreadyVerifiedException();
+        }
+
         $user->setStatus(UserStatusEnum::active->value);
         $this->updateUserOutputPort->update($user);
     }

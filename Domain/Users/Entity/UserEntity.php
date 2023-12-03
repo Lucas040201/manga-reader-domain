@@ -196,11 +196,9 @@ class UserEntity implements EntityInterface
     public function setStatus(int $status): void
     {
         switch ($status) {
+            case $this->getStatus() === UserStatusEnum::active->value && $status === UserStatusEnum::active->value:
             case $this->getStatus() === UserStatusEnum::pending->value && $status === UserStatusEnum::active->value;
                 $this->status = UserStatusEnum::active;
-                break;
-            case $this->getStatus() === UserStatusEnum::active->value && $status === UserStatusEnum::active->value;
-                throw new AccountAlreadyVerifiedException();
                 break;
             default:
                 $this->status = UserStatusEnum::pending;
