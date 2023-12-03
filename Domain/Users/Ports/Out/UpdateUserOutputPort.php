@@ -4,7 +4,7 @@ namespace Core\Domain\Users\Ports\Out;
 
 use Core\Domain\Users\Entity\UserEntity;
 
-interface SendVerificationEmailOutputPort
+interface UpdateUserOutputPort
 {
-    public function sendEmail(UserEntity $user);
+    public function update(UserEntity $user): bool;
 }
