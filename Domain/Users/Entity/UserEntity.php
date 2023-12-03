@@ -174,7 +174,7 @@ class UserEntity implements EntityInterface
         return $this;
     }
 
-    public function setToken(string $token = ''): void
+    public function setToken(string $token = ''): UserEntity
     {
         if(empty($token)) {
             $currentDateTime = new DateTime();
@@ -183,6 +183,7 @@ class UserEntity implements EntityInterface
         } else {
             $this->token = $token;
         }
+        return $this;
     }
 
     public function getToken(): string

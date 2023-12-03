@@ -5,13 +5,13 @@ namespace Core\Domain\Users\UseCases;
 use Core\Domain\Users\Entity\UserEntity;
 use Core\Domain\Users\Exceptions\EmailAlreadyExistsException;
 use Core\Domain\Users\Exceptions\UsernameAlreadyExistsException;
-use Core\Domain\Users\Ports\In\InsertUserInputPort;
+use Core\Domain\Users\Ports\In\CreateUserInputPort;
 use Core\Domain\Users\Ports\Out\FindUserByEmailOutputPort;
 use Core\Domain\Users\Ports\Out\FindUserByUsernameOutputPort;
 use Core\Domain\Users\Ports\Out\InsertUserOutputPort;
 use Core\Domain\Users\Ports\Out\SendVerificationEmailOutputPort;
 
-class InsertUserUseCase implements InsertUserInputPort
+class CreateUserUseCase implements CreateUserInputPort
 {
     public function __construct(
         private readonly InsertUserOutputPort $insertUserOutputPort,

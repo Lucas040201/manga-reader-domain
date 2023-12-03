@@ -4,7 +4,7 @@ namespace Core\Domain\Users\Ports\In;
 
 use Core\Domain\Users\Entity\UserEntity;
 
-interface InsertUserInputPort
+interface CreateUserInputPort
 {
     public function create(UserEntity $user): UserEntity;
 }
