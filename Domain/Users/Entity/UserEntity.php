@@ -4,6 +4,9 @@ namespace Core\Domain\Users\Entity;
 
 
 use Core\Domain\Base\Interfaces\EntityInterface;
+use Core\Domain\Users\Enum\UserStatusEnum;
+use Core\Domain\Users\Exceptions\AccountAlreadyVerifiedException;
+use DateTime;
 
 class UserEntity implements EntityInterface
 {
@@ -17,12 +20,14 @@ class UserEntity implements EntityInterface
     private ?string $email = null,
     private ?string $password = null,
     private ?string $phoneNumber = null,
-    private ?bool $emailConfirmation = null,
+    private ?string $token = null,
+    private ?UserStatusEnum $status = UserStatusEnum::pending,
     private ?string $profilePicture = null,
     private ?string $createdAt = null,
     private ?string $updatedAt = null
     )
     {
+        $this->setToken();
     }
 
     /**
@@ -169,22 +174,42 @@ class UserEntity implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return bool|null
-     */
-    public function getEmailConfirmation(): ?bool
+    public function setToken(string $token = ''): void
     {
-        return $this->emailConfirmation;
+        if(empty($token)) {
+            $currentDateTime = new DateTime();
+            $currentDatetimeStamp = $currentDateTime->getTimestamp();
+            $this->token = md5("{$this->getUsername()}{$this->getCreatedAt()}$currentDatetimeStamp");
+        } else {
+            $this->token = $token;
+        }
+    }
+
+    public function getToken(): string
+    {
+        return $this->token;
     }
 
     /**
-     * @param bool|null $emailConfirmation
-     * @return UserEntity
+     * @throws AccountAlreadyVerifiedException
      */
-    public function setEmailConfirmation(?bool $emailConfirmation): UserEntity
+    public function setStatus(int $status): void
     {
-        $this->emailConfirmation = $emailConfirmation;
-        return $this;
+        switch ($status) {
+            case $this->getStatus() === UserStatusEnum::pending->value && $status === UserStatusEnum::active->value;
+                $this->status = UserStatusEnum::active;
+                break;
+            case $this->getStatus() === UserStatusEnum::active->value && $status === UserStatusEnum::active->value;
+                throw new AccountAlreadyVerifiedException();
+                break;
+            default:
+                $this->status = UserStatusEnum::pending;
+        }
+    }
+
+    public function getStatus(): int
+    {
+        return $this->status->value;
     }
 
     /**
