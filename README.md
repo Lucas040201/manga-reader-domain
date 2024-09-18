@@ -1,4 +1,4 @@
-<h3  align="center">Docker Base para Laravel</h3>
+<h3  align="center">Core da aplicação Manga Reader</h3>
 
   
 
